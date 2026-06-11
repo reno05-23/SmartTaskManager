@@ -5,7 +5,7 @@
             <p>Tugas Tersimpan</p>
         </div>
 
-        <div class="page-content" style="overflow:hidden;">
+        <div class="page-content">
             <div class="block" style="padding-top:12px;">
                 <div class="segmented segmented-raised">
                     <a class="button active" data-filter="all">Semua</a>
@@ -23,7 +23,7 @@
                         </div>
                     </div>
                     <div class="card-content card-content-padding"
-                        style="min-height:280px;">
+                        style="min-height:350px;">
                         <div
                             class="list list-outline-ios list-strong-ios list-dividers-ios no-chevron">
                             <ul id="transaksi_blok">

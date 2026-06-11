@@ -76,7 +76,7 @@
 
                         <div class="block" style="display:flex;gap:8px">
                             <button type="submit"
-                                class="button button-fill warna_dasar_sistem">Update</button>
+                                class="button button-fill warna_dasar_sistem color-white">Update</button>
                             <button type="button" id="btn-hapus"
                                 class="button button-outline color-red">Hapus</button>
                         </div>
@@ -87,4 +87,3 @@
         </div>
     </div>
 </template>
-

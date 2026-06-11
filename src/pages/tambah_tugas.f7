@@ -7,7 +7,7 @@
                     <h1>Tambah Tugas Baru</h1>
                     <p>Isi form berikut untuk menambahkan tugas baru</p>
                 </div>
-                    <a class="link icon-only close-page" href="#">
+                <a class="link icon-only close-page" href="#">
                     <i class="icon f7-icons text-color-white">xmark</i>
                 </a>
             </div>
@@ -19,31 +19,12 @@
                 <div class="form-card">
                     <form id="form-tambah-tugas">
 
-                        <!-- Judul -->
+                        <!-- Isian (ganti dropdown Judul) -->
                         <div class="form-group">
                             <label>Judul Tugas</label>
-
-                            <select id="judul" required>
-                                <option value disabled selected>
-                                    Masukkan judul tugas...
-                                </option>
-                                <option>Ujian Tengah Semester</option>
-                                <option>PR Mingguan</option>
-                                <option>Proyek Akhir</option>
-                                <option value="lainnya">
-                                    Lainnya...
-                                </option>
-                            </select>
-                        </div>
-
-                        <!-- Judul Manual -->
-                        <div class="form-group judul-custom-row"
-                            style="display:none">
-                            <label>Judul Manual</label>
-
-                            <input type="text"
-                                id="judul_custom"
-                                placeholder="Masukkan judul tugas..." />
+                            <textarea id="isian" rows="3"
+                                placeholder="Masukkan Judul Tugas..."
+                                required></textarea>
                         </div>
 
                         <!-- Mata Kuliah -->
@@ -88,7 +69,7 @@
 
                         <!-- BUTTON -->
                         <button type="submit"
-                            class="button button-fill simpan-btn">
+                            class="button button-fill simpan-btn warna_dasar_sistem color-white">
                             Simpan Tugas
                         </button>
 
