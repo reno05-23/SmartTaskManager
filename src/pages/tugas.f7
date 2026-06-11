@@ -1,0 +1,43 @@
+<template>
+    <div class="page" data-name="tugas">
+        <div class="about-header warna_dasar_sistem text-color-white padding">
+            <h1>Daftar Tugas</h1>
+            <p>Tugas Tersimpan</p>
+        </div>
+
+        <div class="page-content" style="overflow:hidden;">
+            <div class="block" style="padding-top:12px;">
+                <div class="segmented segmented-raised">
+                    <a class="button active" data-filter="all">Semua</a>
+                    <a class="button" data-filter="belum">Belum Selesai</a>
+                    <a class="button" data-filter="selesai">Selesai</a>
+                </div>
+            </div>
+
+            <div class="block" style="position:relative;">
+                <div class="card margin-horizontal tugas-card">
+                    <div class="card-header tugas-card-header">
+                        <div class="header-row">
+                            <div class="title-uraian">Uraian</div>
+                            <div class="title-deadline">Deadline</div>
+                        </div>
+                    </div>
+                    <div class="card-content card-content-padding"
+                        style="min-height:280px;">
+                        <div
+                            class="list list-outline-ios list-strong-ios list-dividers-ios no-chevron">
+                            <ul id="transaksi_blok">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <a href="/tambah_tugas/" class="fab fab-raised fab-blue"
+                    style="right:18px;bottom:-22px;position:absolute;z-index:30;"
+                    aria-label="Tambah tugas" title="Tambah tugas">
+
+                    <i class="icon f7-icons">plus</i>
+                </a>
+            </div>
+        </div>
+    </div>
+</template>

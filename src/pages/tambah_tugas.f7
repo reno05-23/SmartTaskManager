@@ -1,0 +1,145 @@
+<template>
+    <div class="page" data-name="tambah_tugas">
+        <!-- HEADER -->
+        <div class="custom-header warna_dasar_sistem">
+            <div class="header-top">
+                <div>
+                    <h1>Tambah Tugas Baru</h1>
+                    <p>Isi form berikut untuk menambahkan tugas baru</p>
+                </div>
+                    <a class="link icon-only close-page" href="#">
+                    <i class="icon f7-icons text-color-white">xmark</i>
+                </a>
+            </div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="page-content">
+            <div class="form-wrapper">
+                <div class="form-card">
+                    <form id="form-tambah-tugas">
+
+                        <!-- Judul -->
+                        <div class="form-group">
+                            <label>Judul Tugas</label>
+
+                            <select id="judul" required>
+                                <option value disabled selected>
+                                    Masukkan judul tugas...
+                                </option>
+                                <option>Ujian Tengah Semester</option>
+                                <option>PR Mingguan</option>
+                                <option>Proyek Akhir</option>
+                                <option value="lainnya">
+                                    Lainnya...
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Judul Manual -->
+                        <div class="form-group judul-custom-row"
+                            style="display:none">
+                            <label>Judul Manual</label>
+
+                            <input type="text"
+                                id="judul_custom"
+                                placeholder="Masukkan judul tugas..." />
+                        </div>
+
+                        <!-- Mata Kuliah -->
+                        <div class="form-group">
+                            <label>Mata Kuliah</label>
+
+                            <input type="text"
+                                id="mata_kuliah"
+                                placeholder="Pilih matkul..." />
+                        </div>
+
+                        <!-- Deadline -->
+                        <div class="form-group">
+                            <label>Deadline</label>
+
+                            <input type="date" id="deadline" />
+                        </div>
+
+                        <!-- Status -->
+                        <div class="form-group">
+                            <label>Status</label>
+
+                            <select id="status">
+                                <option value="belum">
+                                    Belum selesai
+                                </option>
+
+                                <option value="selesai">
+                                    Selesai
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Catatan -->
+                        <div class="form-group">
+                            <label>Catatan (opsional)</label>
+
+                            <textarea id="catatan"
+                                rows="4"
+                                placeholder="Tambahkan catatan..."></textarea>
+                        </div>
+
+                        <!-- BUTTON -->
+                        <button type="submit"
+                            class="button button-fill simpan-btn">
+                            Simpan Tugas
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<!-- Styles moved to src/css/custom.css -->
+
+<script>
+// ini adalah script untuk menangani tombol close pada halaman tambah tugas, agar bisa kembali ke halaman sebelumnya dengan benar
+export default (props, { $, $on }) => {
+    // expose a simple closePage helper for this page
+    if (typeof window !== 'undefined') {
+        window.closePage = function closePage() {
+            try {
+                if (window.app) {
+                    // Prefer view-specific router: page's view, main view, or first view
+                    var pageEl = document.querySelector('.page[data-name="tambah_tugas"]');
+                    if (pageEl && pageEl.f7View && pageEl.f7View.router && typeof pageEl.f7View.router.back === 'function') {
+                        pageEl.f7View.router.back();
+                        return;
+                    }
+                    if (app.views && app.views.main && app.views.main.router && typeof app.views.main.router.back === 'function') {
+                        app.views.main.router.back();
+                        return;
+                    }
+                    if (app.views && app.views.length && app.views[0].router && typeof app.views[0].router.back === 'function') {
+                        app.views[0].router.back();
+                        return;
+                    }
+                }
+                if (window.history && typeof window.history.back === 'function') {
+                    window.history.back();
+                    return;
+                }
+            } catch (err) {
+                console.error('closePage error', err);
+            }
+        };
+        // delegated handler for robustness
+        document.addEventListener('click', function (e) {
+            var el = e.target.closest && e.target.closest('.page[data-name="tambah_tugas"] .close-page');
+            if (!el) return;
+            e.preventDefault();
+            window.closePage();
+        });
+    }
+    return $render;
+}
+</script>

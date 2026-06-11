@@ -7,6 +7,7 @@ import '../css/framework7-custom.less';
 // Import Icons and App Custom Styles
 import '../css/icons.css';
 import '../css/app.less';
+import '../css/custom.css';
 // Import Cordova APIs
 import cordovaApp from './cordova-app.js';
 
@@ -53,3 +54,7 @@ var app = new Framework7({
     },
   },
 });
+// expose app globally so inline handlers/pages can reference it
+window.app = app;
+
+

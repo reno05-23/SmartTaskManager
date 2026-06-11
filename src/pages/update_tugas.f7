@@ -1,0 +1,90 @@
+<template>
+    <div class="page" data-name="update_tugas">
+        <!-- HEADER -->
+        <div class="custom-header warna_dasar_sistem">
+            <div class="header-top">
+                <div>
+                    <h1>Update Tugas</h1>
+                    <p>Ubah detail tugas atau hapus tugas</p>
+                </div>
+                <a href="#" class="link icon-only close-page">
+                    <i class="icon f7-icons text-color-white">xmark</i>
+                </a>
+            </div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="page-content">
+            <div class="form-wrapper">
+                <div class="form-card">
+                    <form id="form-update-tugas">
+                        <div class="form-group">
+                            <label>Judul Tugas</label>
+
+                            <select id="judul" required>
+                                <option value disabled selected>
+                                    Masukkan judul tugas...
+                                </option>
+                                <option>Ujian Tengah Semester</option>
+                                <option>PR Mingguan</option>
+                                <option>Proyek Akhir</option>
+                                <option value="lainnya">
+                                    Lainnya...
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group judul-custom-row"
+                            style="display:none">
+                            <label>Judul Manual</label>
+                            <input type="text"
+                                id="judul_custom"
+                                placeholder="Masukkan judul tugas..." />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Mata Kuliah</label>
+                            <input type="text"
+                                id="mata_kuliah"
+                                placeholder="Pilih matkul..." />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Deadline</label>
+                            <input type="date" id="deadline" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="status">
+                                <option value="belum">
+                                    Belum selesai
+                                </option>
+                                <option value="selesai">
+                                    Selesai
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Catatan (opsional)</label>
+
+                            <textarea id="catatan"
+                                rows="4"
+                                placeholder="Tambahkan catatan..."></textarea>
+                        </div>
+
+                        <div class="block" style="display:flex;gap:8px">
+                            <button type="submit"
+                                class="button button-fill warna_dasar_sistem">Update</button>
+                            <button type="button" id="btn-hapus"
+                                class="button button-outline color-red">Hapus</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
