@@ -64,18 +64,15 @@
             <!-- Sinkronisasi card (aligned with other cards) -->
             <div class="beranda-sinkron-content margin-horizontal">
                 <a href="#" id="btnsinkron" class="link sheet-open"
-                    data-sheet="#sheet-sinkron">
+                    data-sheet="#sheet-backup">
                     <div class="card margin-top beranda-sinkron-card">
                         <div
                             class="card-content card-content-padding beranda-sinkron-content">
                             <div class="beranda-sinkron-icon">
-                                <img src="img/icon1.png" />
+                                <img src="img/iconbak.png" />
                             </div>
                             <div class="beranda-sinkron-body">
-                                <div class="beranda-sinkron-title">Sinkronisasi
-                                    Data</div>
-                                <div class="beranda-sinkron-sub">Sinkronkan Data
-                                    Terbaru Sistem</div>
+                                <div class="beranda-sinkron-title">Backup Data</div>
                             </div>
                             <div class="beranda-sinkron-arrow"></div>
                         </div>
@@ -102,32 +99,7 @@
             </div>
         </div>
 
-        <!-- Sheet Modal Menu Sinkronisasi -->
-        <div class="sheet-modal" id="sheet-sinkron" style="height: auto;"
-            data-swipe-to-close="true" data-backdrop="true">
-            <div class="sheet-modal-inner">
-                <div class="page-content">
-                    <div class="block-title font18">Menu Pilihan</div>
-                    <div class="block">
-                        <div
-                            class="row grid grid-cols-3 grid-gap text-color-black">
-                            <a href="#"
-                                class="text-align-center link display-flex flex-direction-column align-items-center open-backup">
-                                <img src="img/iconbak.png"
-                                    class="besar-icon50" />
-                                <div
-                                    class="margin-top-half font14 weight-bold">Backup</div>
-                            </a>
 
-                        </div>
-                    </div>
-                    <div class="block">
-                        <a href="#"
-                            class="button button-fill color-red sheet-close">Batal</a>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- Sheet Modal Form Backup Online -->
         <div class="sheet-modal" id="sheet-backup" style="height: auto;"
@@ -188,24 +160,6 @@
 
 <script>
 export default (props, { $, $on }) => {
-    if (typeof window !== 'undefined') {
-        // ini adalah script untuk menangani tombol open-backup pada sheet sinkronisasi, agar bisa membuka sheet backup dengan benar
-        document.addEventListener('click', function (e) {
-            var el = e.target.closest && e.target.closest('.open-backup');
-            if (!el) return;
-            e.preventDefault();
-            try {
-                if (window.app && app.sheet) {
-                    app.sheet.open('#sheet-backup');
-                } else {
-                    var sb = document.getElementById('sheet-backup');
-                    if (sb && sb.style) sb.style.display = 'block';
-                }
-            } catch (err) {
-                console.error('open-backup error', err);
-            }
-        });
-    }
     return $render;
 }
 </script>

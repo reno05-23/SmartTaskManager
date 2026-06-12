@@ -83,10 +83,7 @@ svg {height: 600px;}
 /* New styles for beranda separation and stat cards */
 .section-separator{height:12px}
 
-/* Make the 'Batal' button text white inside the sinkron sheet */
-#sheet-sinkron .button.button-fill.color-red.sheet-close {
-    color: #ffffff !important;
-}
+
 .main-task-card{margin-bottom:6px}
 .stat-card{border-radius:10px;padding:6px}
 .stat-card .stat-number{font-size:22px;margin-top:6px}
@@ -302,7 +299,7 @@ svg {height: 600px;}
 /* Inner content padding kept small so card stays compact while stretching horizontally */
 .beranda-sinkron-card .card-content { padding: 8px 0; box-sizing: border-box; }
 .beranda-sinkron-content{ display:flex; align-items:center; gap:8px; padding:2px 4px; background:transparent; box-sizing:border-box; }
-.beranda-sinkron-icon{ flex:0 0 56px; height:56px; display:flex; align-items:center; justify-content:center; background:#7d7777; border-radius:10px; }
+.beranda-sinkron-icon{ flex:0 0 56px; height:56px; display:flex; align-items:center; justify-content:center; }
 .beranda-sinkron-icon img{ width:26px; height:26px; }
 .beranda-sinkron-body{ flex:1 1 auto; min-width:0 }
 .beranda-sinkron-title{ font-weight:700; color:#0b3a66; font-size:16px; margin:0 }
@@ -678,34 +675,7 @@ svg {height: 600px;}
     .task-bullet .icon { font-size:16px; }
 }
 
-/* Sheet 'Menu Pilihan' (sinkron) - constrain icon sizes and spacing */
-/* Layout for three action anchors inside sheet-sinkron */
-#sheet-sinkron .row.grid.grid-cols-3 { display:flex; gap: 8px; align-items: center; justify-content: space-between; padding: 6px 6px; }
 
-/* Make anchors behave like columns and center content */
-#sheet-sinkron .row.grid.grid-cols-3 > a {
-    flex: 0 0 calc((100% - 16px) / 3);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    padding: 8px 6px;
-    box-sizing: border-box;
-}
-
-#sheet-sinkron a.display-flex { gap: 6px; }
-
-/* Icon sizing and label tweaks */
-#sheet-sinkron .besar-icon50 { width: 96px; height: 96px; object-fit: contain; border-radius: 8px; display: block; margin: 0 auto; }
-#sheet-sinkron .margin-top-half { font-size: 13px; margin-top: 6px; }
-
-@media (max-width:480px) {
-    #sheet-sinkron .row.grid.grid-cols-3 { gap: 6px; }
-    #sheet-sinkron .row.grid.grid-cols-3 > a { flex: 1 1 0; padding: 6px 4px; }
-    #sheet-sinkron .besar-icon50 { width: 80px; height: 80px; }
-    #sheet-sinkron .margin-top-half { font-size: 12px; }
-}
 
 /* Improve Sinkronisasi spacing on narrow screens */
 @media (max-width:420px) {
@@ -718,7 +688,7 @@ svg {height: 600px;}
         gap: 10px;
         padding: 8px 10px;
     }
-    .beranda-sinkron-icon { flex: 0 0 48px; height: 48px; border-radius: 10px; }
+    .beranda-sinkron-icon { flex: 0 0 48px; height: 48px; }
     .beranda-sinkron-icon img { width: 32px; height: 32px; }
     .beranda-sinkron-title { font-size: 14px; }
     .beranda-sinkron-sub { font-size: 12px; }
