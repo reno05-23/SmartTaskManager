@@ -52,7 +52,7 @@ svg {height: 600px;}
 .chip{
     margin: 0;
 }
-         --card-gap: 8px;
+
 /* Home screen styles */
 .home-hero{padding:18px 16px;}
 .home-hero{padding:20px 16px;height:120px}
@@ -73,7 +73,7 @@ svg {height: 600px;}
 .color-orange{color:#f39c12}
 .color-red{color:#e74c3c}
 
-         padding: 0 1px; /* smaller horizontal padding for tighter layout */
+    
 .list .item-media i{font-size:20px;color:#333}
 
 @media (max-width: 420px){
@@ -406,7 +406,7 @@ svg {height: 600px;}
     overflow: visible !important;
     height: auto !important;
 }
-# Ensure tugas page fits the viewport and does not show vertical scrollbar
+
 .view-main .page[data-name="tugas"] .page-content {
     height: calc(100vh - 120px) !important;
     overflow-y: hidden !important;
