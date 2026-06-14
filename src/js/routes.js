@@ -1,5 +1,5 @@
 import Beranda from '../pages/beranda.f7';
-import Transaksi from '../pages/tugas.f7';
+import Tugas from '../pages/tugas.f7';
 import Tentang from '../pages/tentang.f7';
 import Home from '../pages/home.f7';
 import TambahTugas from '../pages/tambah_tugas.f7';
@@ -11,7 +11,7 @@ var routes = [
         component: Home,
         tabs: [
             {path: '/', id: 'view-beranda', component: Beranda},
-            {path: '/tugas/', id: 'view-tugas', component: Transaksi},
+            {path: '/tugas/', id: 'view-tugas', component: Tugas},
             {path: '/tentang/', id: 'view-tentang', component: Tentang}
         ]
     },

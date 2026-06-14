@@ -68,9 +68,193 @@
     </div>
 </template>
 <script>
-    export default (props, { $, $on }) => {
-        // no-op on pageInit here; senter toggle handled in beranda.f7
-        
-        return $render;
-    }
+export default (props, { $, $on }) => {
+
+    const ITEMS_PER_PAGE = 5;
+    let semuaTugas = [];
+    let halamanAktif = 0;
+
+    const tampil_ringkasan = () => {
+        let blokBeranda = document.getElementById("beranda-tugas-list");
+        if (!blokBeranda) return;
+
+        let hasil = [];
+        let baca = db.transaction(["tabel_tugas"], "readonly").objectStore("tabel_tugas").openCursor(null, "prev");
+        baca.onsuccess = function(event) {
+            let item = event.target.result;
+            if (item) {
+                hasil.push(item.value);
+                item.continue();
+            } else {
+                let total = hasil.length;
+                let belum = 0, selesai = 0, deadline = 0, terlambat = 0;
+                let hariIni = new Date();
+                hariIni.setHours(0, 0, 0, 0);
+
+                for (let i = 0; i < hasil.length; i++) {
+                    if (hasil[i].status_selesai == "belum") belum++; else selesai++;
+                    let tgl = new Date(hasil[i].tgl_deadline);
+                    tgl.setHours(0, 0, 0, 0);
+                    let selisih = (tgl - hariIni) / (1000 * 60 * 60 * 24);
+                    if (selisih >= 0 && selisih <= 3) deadline++;
+                    if (selisih < 0 && hasil[i].status_selesai == "belum") terlambat++;
+                }
+
+                let elBelum = document.getElementById("beranda-angka-belum");
+                let elTotal = document.getElementById("beranda-total");
+                let elSelesai = document.getElementById("angka-selesai");
+                let elDeadline = document.getElementById("angka-deadline");
+                let elTerlambat = document.getElementById("angka-terlambat");
+
+                if (elBelum) elBelum.innerHTML = belum;
+                if (elTotal) elTotal.innerHTML = "Dari " + total + " tugas total";
+                if (elSelesai) elSelesai.innerHTML = selesai;
+                if (elDeadline) elDeadline.innerHTML = deadline;
+                if (elTerlambat) elTerlambat.innerHTML = terlambat;
+
+                semuaTugas = hasil.filter(t => t.status_selesai == "belum");
+                halamanAktif = 0;
+                renderHalaman();
+            }
+        };
+        baca.onerror = function(event) {
+            app.dialog.alert(`Data Gagal Dibaca. Error: ${event.target.errorCode}`, "Error");
+        };
+    };
+
+    const renderHalaman = () => {
+        let blokBeranda = document.getElementById("beranda-tugas-list");
+        if (!blokBeranda) return;
+
+        let start = halamanAktif * ITEMS_PER_PAGE;
+        let slice = semuaTugas.slice(start, start + ITEMS_PER_PAGE);
+        let totalHalaman = Math.ceil(semuaTugas.length / ITEMS_PER_PAGE);
+
+        let tampil = "";
+        if (slice.length === 0) {
+            tampil = `<li><div class="item-content"><div class="item-inner" style="color:#aaa;font-size:13px;">Tidak ada tugas yang belum selesai</div></div></li>`;
+        } else {
+            for (let i = 0; i < slice.length; i++) {
+                tampil += `
+                    <li>
+                        <a href="/update_tugas/${slice[i].id}/" class="item-link item-content">
+                            <div class="item-inner">
+                                <div class="item-title">
+                                    <b>${slice[i].judul_tugas}</b>
+                                    <div style="font-size:12px;color:#777;">${slice[i].kategori}</div>
+                                </div>
+                                <div class="item-after" style="font-size:12px;">${slice[i].tgl_deadline}</div>
+                            </div>
+                        </a>
+                    </li>
+                `;
+            }
+        }
+
+        let nav = "";
+        if (totalHalaman > 1) {
+            nav = `
+                <li>
+                    <div class="item-content" style="justify-content:space-between;padding:8px 16px;">
+                        <button class="button button-small ${halamanAktif === 0 ? 'disabled' : ''}" id="btn-prev-beranda">&#8592; Sebelumnya</button>
+                        <span style="font-size:12px;color:#888;">${halamanAktif + 1} / ${totalHalaman}</span>
+                        <button class="button button-small ${halamanAktif >= totalHalaman - 1 ? 'disabled' : ''}" id="btn-next-beranda">Berikutnya &#8594;</button>
+                    </div>
+                </li>
+            `;
+        }
+
+        blokBeranda.innerHTML = tampil + nav;
+
+        let btnPrev = document.getElementById("btn-prev-beranda");
+        let btnNext = document.getElementById("btn-next-beranda");
+
+        if (btnPrev) btnPrev.addEventListener("click", function() {
+            if (halamanAktif > 0) { halamanAktif--; renderHalaman(); }
+        });
+        if (btnNext) btnNext.addEventListener("click", function() {
+            if (halamanAktif < totalHalaman - 1) { halamanAktif++; renderHalaman(); }
+        });
+    };
+
+    const tampil_tugas = () => {
+        let blok = document.getElementById("taskmanager_blok");
+        if (!blok) return;
+        blok.innerHTML = "";
+
+        const hitungSelisih = (tgl_deadline) => {
+            let hari_ini = new Date();
+            hari_ini.setHours(0, 0, 0, 0);
+            let deadline = new Date(tgl_deadline);
+            deadline.setHours(0, 0, 0, 0);
+            let selisih = Math.round((deadline - hari_ini) / (1000 * 60 * 60 * 24));
+            if (selisih < 0) return `<span style="color:#e74c3c;font-weight:600;">Terlambat<br>${Math.abs(selisih)} hari</span>`;
+            if (selisih === 0) return `<span style="color:#e67e22;font-weight:600;">Hari ini!</span>`;
+            return `<span style="color:#27ae60;font-weight:600;">Kurang<br>${selisih} hari lagi</span>`;
+        };
+
+        let baca = db.transaction(["tabel_tugas"], "readonly").objectStore("tabel_tugas").index("tgl_deadline").openCursor(null, "prev");
+        baca.onsuccess = function(event) {
+            let item = event.target.result;
+            if (item) {
+                let dtx = `<li>
+                    <a href="/update_tugas/${item.value.id}/" class="item-link item-content" style="display:block;padding:10px 16px;border-bottom:1px solid #f0f0f0;text-decoration:none;">
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <div style="flex:1 1 auto;min-width:0;">
+                                <div style="font-weight:600;font-size:15px;color:#333;">${item.value.judul_tugas}</div>
+                                <div style="font-size:12px;color:#888;margin-top:2px;">${item.value.kategori}</div>
+                                <div style="font-size:12px;color:#888;margin-top:1px;">Status: ${item.value.status_selesai}</div>
+                                <div style="font-size:12px;color:#555;margin-top:4px;">${item.value.catatan ? item.value.catatan : ''}</div>
+                            </div>
+                            <div style="flex:0 0 90px;text-align:center;border-left:1px solid #eee;padding-left:10px;">
+                                <div style="font-size:11px;color:#aaa;margin-bottom:4px;">${item.value.tgl_deadline}</div>
+                                <div style="font-size:12px;line-height:1.4;">${hitungSelisih(item.value.tgl_deadline)}</div>
+                            </div>
+                        </div>
+                    </a>
+                </li>`;
+                blok.insertAdjacentHTML('beforeend', dtx);
+                item.continue();
+            }
+        };
+        baca.onerror = function(event) {
+            app.dialog.alert(`Tugas Gagal Dibaca. Error: ${event.target.errorCode}`, "Error");
+        };
+    };
+
+    $on('pageInit', () => {
+        $(document).off('click', 'a[data-route-tab-id="view-tugas"]');
+        $(document).on('click', 'a[data-route-tab-id="view-tugas"]', function() {
+            setTimeout(() => { tampil_tugas(); }, 100);
+        });
+
+        // Trigger beranda saat tab beranda diklik
+        $(document).off('click', 'a[data-route-tab-id="view-beranda"]');
+        $(document).on('click', 'a[data-route-tab-id="view-beranda"]', function() {
+            setTimeout(() => { tampil_ringkasan(); }, 100);
+        });
+
+        app.off('routeChanged');
+        app.on('routeChanged', function(newRoute) {
+            let tabTugas = document.getElementById('view-tugas');
+            let tabBeranda = document.getElementById('view-beranda');
+
+            if (tabTugas && tabTugas.classList.contains('tab-active')) {
+                tampil_tugas();
+            }
+            if (tabBeranda && tabBeranda.classList.contains('tab-active')) {
+                tampil_ringkasan();
+            }
+        });
+
+        // Load beranda pertama kali
+        setTimeout(() => { tampil_ringkasan(); }, 300);
+    });
+
+    $on('pageBeforeRemove', () => {
+        app.off('routeChanged');
+    });
+
+    return $render;
+}
 </script>

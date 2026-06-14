@@ -68,10 +68,14 @@
                         </div>
 
                         <!-- BUTTON -->
-                        <button type="submit"
-                            class="button button-fill simpan-btn warna_dasar_sistem color-white">
-                            Simpan Tugas
-                        </button>
+                         <div class="grid grid-cols-2 grid-gap">
+                            <button type="button" id="simpan-tugas" class="button button-fill color-blue warna_dasar_sistem color-white" @click="${tambah_tugas}">
+                                Simpan
+                            </button>
+                            <button type="button" id="reset-tugas" class="button button-fill color-red" @click="${kosong_form_tugas}">
+                                Reset
+                            </button>
+                         </div>
 
                     </form>
                 </div>
@@ -83,7 +87,7 @@
 <!-- Styles moved to src/css/custom.css -->
 
 <script>
- import { tambahtugas } from "../js/function.js";
+//  import { tambahtugas } from "../js/function.js";
 // (faktur) ini adalah script untuk menangani tombol close pada halaman tambah tugas, agar bisa kembali ke halaman sebelumnya dengan benar
 export default (props, { $, $on }) => {
     // expose a simple closePage helper for this page
@@ -122,25 +126,66 @@ export default (props, { $, $on }) => {
             window.closePage();
         });
     }
-    // submit form tambah tugas
-    document.addEventListener("submit", function (e) {
-        if (e.target.id != "form-tambah-tugas") return;
-        e.preventDefault();
 
-        var judul = document.getElementById("isian").value;
-        var kategori = document.getElementById("mata_kuliah").value;
-        var deadline = document.getElementById("deadline").value;
-        var status = document.getElementById("status").value;
-        var catatan = document.getElementById("catatan").value;
+    // tombol reset
+    const kosong_form_tugas = () =>{
+        document.getElementById("isian").value = "";
+        document.getElementById("mata_kuliah").value = "";
+        document.getElementById("deadline").value = "";
+        document.getElementById("status").value = "belum";
+        document.getElementById("catatan").value = "";
+    };
 
-        tambahtugas(
-            judul,
-            deadline,
-            kategori,
-            status,
-            catatan
-        );
-    });
+    //tambah tugas
+    const tambah_tugas = () =>{
+        let judul = document.getElementById("isian").value;
+        let kategori = document.getElementById("mata_kuliah").value;
+        let deadline = document.getElementById("deadline").value;
+        let status = document.getElementById("status").value;
+        let catatan = document.getElementById("catatan").value;
+
+        if (judul == "" || kategori == "" || deadline == "" || status == "" || catatan == ""){
+            app.dialog.alert("Ada Isian yang masih kosong", "Error");
+            return;
+        }
+        let data = {
+            judul_tugas: judul,
+            tgl_deadline: deadline,
+            kategori: kategori,
+            status_selesai: status,
+            catatan: catatan
+
+        };
+        let proses = db.transaction(["tabel_tugas"], "readwrite").objectStore("tabel_tugas").add(data);
+        proses.onsuccess = function(event){
+            app.dialog.alert("Tambah Tugas Berhasil", "Sukses");
+            kosong_form_tugas();
+        };
+        proses.onerror = function (event){
+            app.dialog.alert(`Tambah Tugas Gagal. Error: ${event.target.errorCode}`, "Error");
+        };
+    };
+
+
+    // // submit form tambah tugas
+    // document.addEventListener("submit", function (e) {
+    //     if (e.target.id != "form-tambah-tugas") return;
+    //     e.preventDefault();
+
+    //     var judul = document.getElementById("isian").value;
+    //     var kategori = document.getElementById("mata_kuliah").value;
+    //     var deadline = document.getElementById("deadline").value;
+    //     var status = document.getElementById("status").value;
+    //     var catatan = document.getElementById("catatan").value;
+
+    //     tambahtugas(
+    //         judul,
+    //         deadline,
+    //         kategori,
+    //         status,
+    //         catatan
+    //     );
+    // });
     return $render;
 }
 </script>

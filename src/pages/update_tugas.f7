@@ -7,7 +7,7 @@
                     <h1>Update Tugas</h1>
                     <p>Ubah detail tugas atau hapus tugas</p>
                 </div>
-                <a href="#" class="link icon-only close-page">
+                <a href="/tugas/" class="link icon-only close-page">
                     <i class="icon f7-icons text-color-white">xmark</i>
                 </a>
             </div>
@@ -17,101 +17,123 @@
         <div class="page-content">
             <div class="form-wrapper">
                 <div class="form-card">
-                    <form id="form-update-tugas">
-                        <input type="hidden" id="id_tugas" />
-                        <div class="form-group">
-                            <label>Mata Kuliah</label>
-                            <input type="text"
-                                id="judul"
-                                placeholder="tulis judul..." />
-                        </div>
-                        <div class="form-group">
-                            <label>Mata Kuliah</label>
-                            <input type="text"
-                                id="mata_kuliah"
-                                placeholder="Pilih matkul..." />
-                        </div>
-                        <div class="form-group">
-                            <label>Deadline</label>
-                            <input type="date" id="deadline" />
-                        </div>
-                        <div class="form-group">
-                            <label>Status</label>
-                            <select id="status">
-                                <option value="belum">
-                                    Belum selesai
-                                </option>
-                                <option value="selesai">
-                                    Selesai
-                                </option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Catatan (opsional)</label>
-                            <textarea id="catatan"
-                                rows="4"
-                                placeholder="Tambahkan catatan..."></textarea>
-                        </div>
-                        <div class="block" style="display:flex;gap:8px">
-                            <button type="submit"
-                                class="button button-fill warna_dasar_sistem color-white">Update</button>
-                            <button type="button" id="btn-hapus"
-                                class="button button-outline color-red">Hapus</button>
-                        </div>
-                    </form>
+                    <input type="hidden" id="id_tugas" />
+                    <div class="form-group">
+                        <label>Judul Tugas</label>
+                        <input type="text" id="judul" placeholder="Tulis judul..." />
+                    </div>
+                    <div class="form-group">
+                        <label>Mata Kuliah</label>
+                        <input type="text" id="mata_kuliah" placeholder="Pilih matkul..." />
+                    </div>
+                    <div class="form-group">
+                        <label>Deadline</label>
+                        <input type="date" id="deadline" />
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="status">
+                            <option value="belum">Belum selesai</option>
+                            <option value="selesai">Selesai</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Catatan (opsional)</label>
+                        <textarea id="catatan" rows="4" placeholder="Tambahkan catatan..."></textarea>
+                    </div>
+                    <div class="block" style="display:flex;gap:8px">
+                        <button type="button" id="transaksi_btnupdate"
+                            class="button button-fill warna_dasar_sistem color-white"
+                            @click="${update_tugas}">Update
+                        </button>
+                        <button type="button" id="transaksi_btnhapus"
+                            class="button button-outline color-red"
+                            @click="${hapus_tugas}">Hapus
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </template>
-<script> 
-import { ambilsatutugas, updatetugas, hapustugas } from "../js/function.js"; 
+<script>
 export default (props, { $, $on }) => {
-    var id = Number(props.id);
-    $on('pageInit', function () {
-        // nk diklik salah satu-> melbu update->form
-        ambilsatutugas(id, function (data) {
-            document.getElementById("id_tugas").value = data.id;
-            document.getElementById("judul").value =
-                data.judul_tugas;
-            document.getElementById("mata_kuliah").value =
-                data.kategori;
-            document.getElementById("deadline").value =
-                data.tgl_deadline;
-            document.getElementById("status").value =
-                data.status_selesai;
-            document.getElementById("catatan").value =
-                data.catatan;
-            console.log(data);
-        });
+    let id = Number(props.id);
+
+    $on('pageInit', () => {
+        let baca = db.transaction(["tabel_tugas"], "readonly")
+                     .objectStore("tabel_tugas")
+                     .get(id);
+
+        baca.onsuccess = function(event) {
+            let data = event.target.result;
+            if(data) {
+                $("#id_tugas").val(data.id);
+                $("#judul").val(data.judul_tugas);
+                $("#mata_kuliah").val(data.kategori);
+                $("#deadline").val(data.tgl_deadline);
+                $("#status").val(data.status_selesai);
+                $("#catatan").val(data.catatan);
+            }
+        };
+
+        baca.onerror = function(event) {
+            app.dialog.alert(`Data Gagal Dimuat. Error: ${event.target.errorCode}`, "Error");
+        };
     });
-    // iki ngupdate
-    document.addEventListener("submit", function (e) {
-        if (e.target.id != "form-update-tugas") return;
-        e.preventDefault();
-        var id = Number(document.getElementById("id_tugas").value);
-        var judul = document.getElementById("judul").value;
-        var kategori = document.getElementById("mata_kuliah").value;
-        var deadline = document.getElementById("deadline").value;
-        var status = document.getElementById("status").value;
-        var catatan = document.getElementById("catatan").value;
-        updatetugas(
-            id,
-            judul,
-            deadline,
-            kategori,
-            status,
-            catatan
+
+    const update_tugas = () => {
+        let id       = $("#id_tugas").val();
+        let judul    = $("#judul").val();
+        let kategori = $("#mata_kuliah").val();
+        let deadline = $("#deadline").val();
+        let status   = $("#status").val();
+        let catatan  = $("#catatan").val();
+
+        if(id == "" || judul == "" || kategori == "" || deadline == "" || status == ""){
+            app.dialog.alert("Ada Isian yang Masih Kosong", "Error");
+            return;
+        }
+
+        let data = {id: Number(id), judul_tugas: judul, tgl_deadline: deadline, kategori: kategori, status_selesai: status, catatan: catatan};
+        let proses = db.transaction(["tabel_tugas"], "readwrite").objectStore("tabel_tugas").put(data);
+
+        proses.onsuccess = function(event) {
+            app.dialog.alert("Update Tugas Berhasil", "Sukses");
+            app.views.main.router.back();
+        };
+
+        proses.onerror = function(event) {
+            app.dialog.alert(`Update Tugas Gagal. Error: ${event.target.errorCode}`, "Error");
+        };
+    };
+
+    const hapus_tugas = () => {
+        let id = $("#id_tugas").val();
+
+        if(id == ""){
+            app.dialog.alert("Ada Isian yang Masih Kosong", "Error");
+            return;
+        }
+
+        app.dialog.confirm("Anda Yakin Ingin Menghapus Data Ini?", "Konfirmasi",
+            function() {
+                let proses = db.transaction(["tabel_tugas"], "readwrite")
+                               .objectStore("tabel_tugas")
+                               .delete(Number(id));
+
+                proses.onsuccess = function(event) {
+                    app.dialog.alert("Hapus Tugas Berhasil", "Sukses");
+                    app.views.main.router.back();
+                };
+
+                proses.onerror = function(event) {
+                    app.dialog.alert(`Hapus Tugas Gagal. Error: ${event.target.errorCode}`, "Error");
+                };
+            }
         );
-        console.log("UPDATE BERHASIL");
-    });
-    // iki hapus
-    document.addEventListener("click", function (e) {
-        if (e.target.id != "btn-hapus") return;
-        var id = Number(document.getElementById("id_tugas").value);
-        hapustugas(id);
-        console.log("DATA DIHAPUS");
-    });
+    };
+
     return $render;
 }
 </script>

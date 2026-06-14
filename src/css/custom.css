@@ -408,31 +408,31 @@ svg {height: 600px;}
 }
 
 .view-main .page[data-name="tugas"] .page-content {
-    height: calc(100vh - 120px) !important;
-    overflow-y: hidden !important;
+    height: auto !important;
+    overflow-y: auto !important;
 }
-#transaksi_blok .item-row{ display:flex; align-items:center; justify-content:space-between; gap:12px }
-#transaksi_blok .uraian{ flex:1 1 auto; text-align:left; color:#333 }
-#transaksi_blok .uraian .item-title{ font-weight:600; color:#333; margin:0 }
-#transaksi_blok .deadline{ flex:0 0 180px; text-align:right; color:#666; font-size:13px }
+#taskmanager_blok .item-row{ display:flex; align-items:center; justify-content:space-between; gap:12px }
+#taskmanager_blok .uraian{ flex:1 1 auto; text-align:left; color:#333 }
+#taskmanager_blok .uraian .item-title{ font-weight:600; color:#333; margin:0 }
+#taskmanager_blok .deadline{ flex:0 0 180px; text-align:right; color:#666; font-size:13px }
 
 .tugas-card .tugas-card-header{ padding:16px 20px; border-bottom:1px solid #eee; background:#fff }
 .tugas-card .header-row{ display:flex; align-items:center; gap:12px }
 .tugas-card .title-uraian{ flex:1 1 auto; font-weight:700; color:#333; min-width:0; font-size:18px; padding-right:18px; border-right:1px solid #f0f0f0 }
 .tugas-card .title-deadline{ flex:0 0 180px; width:180px; margin-left:16px; text-align:right; font-weight:700; color:#333; padding-right:8px; font-size:18px }
-#transaksi_blok{ list-style:none; margin:0; padding:8px 0; min-height:220px }
-#transaksi_blok .item-content{ border-radius:8px; padding:10px 12px; background:transparent; border-bottom:1px solid #f3f3f3 }
-#transaksi_blok .item-row{ display:flex; align-items:center; justify-content:space-between; gap:12px }
-#transaksi_blok .uraian{ flex:1 1 auto; text-align:left; color:#333 }
-#transaksi_blok .uraian .item-title{ font-weight:600; color:#333; margin:0; font-size:15px }
-#transaksi_blok .deadline{ flex:0 0 180px; text-align:right; color:#666; font-size:14px }
+#taskmanager_blok{ list-style:none; margin:0; padding:8px 0; min-height:220px }
+#taskmanager_blok .item-content{ border-radius:8px; padding:10px 12px; background:transparent; border-bottom:1px solid #f3f3f3 }
+#taskmanager_blok .item-row{ display:flex; align-items:center; justify-content:space-between; gap:12px }
+#taskmanager_blok .uraian{ flex:1 1 auto; text-align:left; color:#333 }
+#taskmanager_blok .uraian .item-title{ font-weight:600; color:#333; margin:0; font-size:15px }
+#taskmanager_blok .deadline{ flex:0 0 180px; text-align:right; color:#666; font-size:14px }
 
 /* Prevent scrolling inside the tugas card/list: make content expand and stay visible */
 .page[data-name="tugas"] .card.tugas-card .card-content { overflow: visible !important; max-height: none !important; }
-.page[data-name="tugas"] #transaksi_blok { overflow: visible !important; max-height: none !important; }
+.page[data-name="tugas"] #taskmanager_blok { overflow: visible !important; max-height: none !important; }
 
-#transaksi_blok .item-title{ font-weight:600; color:#333 }
-#transaksi_blok .item-after{ color:#666; font-size:13px }
+#taskmanager_blok .item-title{ font-weight:600; color:#333 }
+#taskmanager_blok .item-after{ color:#666; font-size:13px }
 .segmented{ margin:8px 12px }
 .segmented .button{ padding:6px 12px; border-radius:8px; font-size:13px }
 .segmented .button.active{ background:#e8f5fb; color:#2D7ab8 }
@@ -541,21 +541,21 @@ svg {height: 600px;}
     .senter-fab i.material-icons { font-size:18px; }
 }
 
-/* Prevent scrolling on Beranda (home) page */
 .page[data-name="beranda"] .page-content {
-    overflow: hidden !important;
+    overflow-y: auto !important;
+    height: auto !important;
 }
 
-/* Stronger rules to ensure Beranda does not scroll across devices */
 .view-main .page[data-name="beranda"],
 .view-main .page[data-name="beranda"] .page-content {
-    overflow: hidden !important;
+    overflow-y: auto !important;
+    height: auto !important;
 }
 
-/* Constrain content area so cards layout inside without creating page scroll
-   Adjust 140px if header + tabbar heights differ on your device */
+/* Remove fixed height constraint so content can expand */
 .view-main .page[data-name="beranda"] .page-content {
-    height: calc(100vh - 140px) !important;
+    height: auto !important;
+    max-height: none !important;
 }
 
 /* Allow internal cards to scroll if their content overflows */
