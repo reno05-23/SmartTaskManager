@@ -18,28 +18,12 @@
             <div class="form-wrapper">
                 <div class="form-card">
                     <form id="form-update-tugas">
+                        <input type="hidden" id="id_tugas" />
                         <div class="form-group">
-                            <label>Judul Tugas</label>
-
-                            <select id="judul" required>
-                                <option value disabled selected>
-                                    Masukkan judul tugas...
-                                </option>
-                                <option>Ujian Tengah Semester</option>
-                                <option>PR Mingguan</option>
-                                <option>Proyek Akhir</option>
-                                <option value="lainnya">
-                                    Lainnya...
-                                </option>
-                            </select>
-                        </div>
-
-                        <div class="form-group judul-custom-row"
-                            style="display:none">
-                            <label>Judul Manual</label>
+                            <label>Mata Kuliah</label>
                             <input type="text"
-                                id="judul_custom"
-                                placeholder="Masukkan judul tugas..." />
+                                id="judul"
+                                placeholder="tulis judul..." />
                         </div>
 
                         <div class="form-group">
@@ -87,3 +71,79 @@
         </div>
     </div>
 </template>
+<script> 
+import { ambilsatutugas, updatetugas, hapustugas } from "../js/function.js"; 
+export default (props, { $, $on }) => {
+
+    var id = Number(props.id);
+
+    $on('pageInit', function () {
+
+        ambilsatutugas(id, function (data) {
+            document.getElementById("id_tugas").value = data.id;
+
+            document.getElementById("judul").value =
+                data.judul_tugas;
+
+            document.getElementById("mata_kuliah").value =
+                data.kategori;
+
+            document.getElementById("deadline").value =
+                data.tgl_deadline;
+
+            document.getElementById("status").value =
+                data.status_selesai;
+
+            document.getElementById("catatan").value =
+                data.catatan;
+            console.log(data);
+
+        });
+
+    });
+    document.addEventListener("submit", function (e) {
+
+        if (e.target.id != "form-update-tugas") return;
+
+        e.preventDefault();
+
+        var id = Number(document.getElementById("id_tugas").value);
+
+        var judul = document.getElementById("judul").value;
+
+        var kategori = document.getElementById("mata_kuliah").value;
+
+        var deadline = document.getElementById("deadline").value;
+
+        var status = document.getElementById("status").value;
+
+        var catatan = document.getElementById("catatan").value;
+
+        updatetugas(
+            id,
+            judul,
+            deadline,
+            kategori,
+            status,
+            catatan
+        );
+
+        console.log("UPDATE BERHASIL");
+
+    });
+    document.addEventListener("click", function (e) {
+
+        if (e.target.id != "btn-hapus") return;
+
+        var id = Number(document.getElementById("id_tugas").value);
+
+        hapustugas(id);
+
+        console.log("DATA DIHAPUS");
+
+    });
+
+    return $render;
+
+}
+</script>

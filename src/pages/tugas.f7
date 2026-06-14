@@ -41,3 +41,50 @@
         </div>
     </div>
 </template>
+<script>
+import { bacatugas } from "../js/function.js";
+export default (props, { $, $on }) => {
+    bacatugas(function (hasil) {
+        var tampil = "";
+        for (var i = 0; i < hasil.length; i++) {
+            tampil += `
+            <li>
+
+                 <a href="/update_tugas/${hasil[i].id}/" class="item-link item-content">
+                    <div class="item-row">
+
+                        <div class="uraian">
+
+                            <div class="item-title">
+                                ${hasil[i].judul_tugas}
+                            </div>
+
+                            <div>
+                                ${hasil[i].kategori}
+                            </div>
+
+                            <div>
+                                Status : ${hasil[i].status_selesai}
+                            </div>
+
+                        </div>
+
+                        <div class="deadline">
+
+                            ${hasil[i].tgl_deadline}
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </li>
+            `;
+        }
+        document.getElementById("transaksi_blok").innerHTML = tampil;
+    });
+    
+    return $render;
+}
+</script>

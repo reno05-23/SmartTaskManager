@@ -32,7 +32,7 @@
                 <div class="col">
                     <div class="card card-statistik">
                         <div class="card-content card-content-padding">
-                            <div class="jumlah-tugas angka-selesai"> 2</div>
+                            <div id="angka-selesai" class="jumlah-tugas angka-selesai">0</div>
                             <div class="font14"> Selesai</div>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                 <div class="col">
                     <div class="card card-statistik">
                         <div class="card-content card-content-padding">
-                            <div class="jumlah-tugas angka-deadline"> 4 </div>
+                            <div id="angka-deadline" class="jumlah-tugas angka-deadline">0</div>
                             <div class="font14"> Mendekati Deadline</div>
                         </div>
                     </div>
@@ -51,7 +51,7 @@
                 <div class="col">
                     <div class="card card-statistik">
                         <div class="card-content card-content-padding">
-                            <div class="jumlah-tugas angka-terlambat">7</div>
+                            <div id="angka-terlambat" class="jumlah-tugas angka-terlambat">0</div>
                             <div class="font14"> Terlambat </div>
                         </div>
                     </div>
@@ -159,7 +159,73 @@
 </template>
 
 <script>
+import {
+    konfigurasidb,
+    bacatugas
+} from "../js/function.js";
 export default (props, { $, $on }) => {
+    console.log("SCRIPT BERANDA DIMUAT");
+    konfigurasidb();
+
+    setTimeout(function () {
+        bacatugas(function (hasil) {
+            var total = hasil.length;
+            var belum = 0;
+            var selesai = 0;
+            var deadline = 0;
+            var terlambat = 0;
+            var hariIni = new Date();
+
+            for (var i = 0; i < hasil.length; i++) {
+                if (hasil[i].status_selesai == "belum") {
+                    belum++;
+                } else {
+                    selesai++;
+                }
+                var tgl = new Date(hasil[i].tgl_deadline);
+                var selisih = (tgl - hariIni) / (1000 * 60 * 60 * 24);
+                if (selisih >= 0 && selisih <= 3) {
+                    deadline++;
+                }
+                if (selisih < 0 && hasil[i].status_selesai == "belum") {
+                    terlambat++;
+                }
+            }
+            // Ringkasan
+            document.getElementById("beranda-angka-belum").innerHTML = belum;
+            document.getElementById("beranda-total").innerHTML =
+                "Dari " + total + " tugas total";
+            // Statistik
+            document.getElementById("angka-selesai").innerHTML = selesai;
+            document.getElementById("angka-deadline").innerHTML = deadline;
+            document.getElementById("angka-terlambat").innerHTML = terlambat;
+            console.log(hasil);
+            // iki nampilno tugas terbaru ng beranda
+            var tampil = "";
+            // data terbaru ada di akhir array
+            for (var i = hasil.length - 1; i >= 0 && i >= hasil.length - 3; i--) {
+                tampil += `
+                <li>
+                    <a href="/update_tugas/${hasil[i].id}/"
+                    class="item-link item-content">
+                        <div class="item-inner">
+                            <div class="item-title">
+                                <b>${hasil[i].judul_tugas}</b>
+                                <div style="font-size:12px;color:#777;">
+                                    ${hasil[i].kategori}
+                                </div>
+                            </div>
+                            <div class="item-after">
+                                ${hasil[i].tgl_deadline}
+                            </div>
+                        </div>
+                    </a>
+                </li>
+                `;
+            }
+            document.getElementById("beranda-tugas-list").innerHTML = tampil;
+        });
+    }, 300);
     return $render;
 }
 </script>
