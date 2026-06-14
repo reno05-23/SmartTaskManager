@@ -166,7 +166,7 @@ import {
 export default (props, { $, $on }) => {
     console.log("SCRIPT BERANDA DIMUAT");
     konfigurasidb();
-
+    // baca data
     setTimeout(function () {
         bacatugas(function (hasil) {
             var total = hasil.length;
@@ -200,27 +200,28 @@ export default (props, { $, $on }) => {
             document.getElementById("angka-deadline").innerHTML = deadline;
             document.getElementById("angka-terlambat").innerHTML = terlambat;
             console.log(hasil);
+
             // iki nampilno tugas terbaru ng beranda
             var tampil = "";
             // data terbaru ada di akhir array
             for (var i = hasil.length - 1; i >= 0 && i >= hasil.length - 3; i--) {
                 tampil += `
-                <li>
-                    <a href="/update_tugas/${hasil[i].id}/"
-                    class="item-link item-content">
-                        <div class="item-inner">
-                            <div class="item-title">
-                                <b>${hasil[i].judul_tugas}</b>
-                                <div style="font-size:12px;color:#777;">
-                                    ${hasil[i].kategori}
+                    <li>
+                        <a href="/update_tugas/${hasil[i].id}/"
+                        class="item-link item-content">
+                            <div class="item-inner">
+                                <div class="item-title">
+                                    <b>${hasil[i].judul_tugas}</b>
+                                    <div style="font-size:12px;color:#777;">
+                                        ${hasil[i].kategori}
+                                    </div>
+                                </div>
+                                <div class="item-after">
+                                    ${hasil[i].tgl_deadline}
                                 </div>
                             </div>
-                            <div class="item-after">
-                                ${hasil[i].tgl_deadline}
-                            </div>
-                        </div>
-                    </a>
-                </li>
+                        </a>
+                    </li>
                 `;
             }
             document.getElementById("beranda-tugas-list").innerHTML = tampil;
