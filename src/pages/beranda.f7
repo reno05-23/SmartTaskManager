@@ -6,10 +6,11 @@
             <h1>Smart Task Manager</h1>
             <p>Selamat Datang</p>
         </div>
+
         <!-- Senter button (moved from tabbar) - styled like FAB -->
         <a href="javascript:void(0)" id="btn-senter"
             class="fab fab-raised fab-blue senter-fab" aria-label="Senter"
-            title="Senter">
+            title="Senter" @click="${senter}">
             <i class="icon f7-icons">light_max</i>
             <span class="tabbar-label" style="display:none">Senter</span>
         </a>
@@ -159,14 +160,12 @@
 </template>
 
 <script>
-import { konfigurasidb } from "../js/function.js";
+import { konfigurasidb, senter } from "../js/function.js";
 export default (props, { $, $on }) => {
     konfigurasidb();
     return $render;
 }
 </script>
-
-
 
 
 <!-- 

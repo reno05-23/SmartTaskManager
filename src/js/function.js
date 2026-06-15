@@ -66,10 +66,25 @@ export function konfigurasidb(){
     }
 }
 
-
-
-
-
+// Senter
+export function senter() {
+    if (typeof window.plugins !== 'undefined' && window.plugins.flashlight) {
+        window.plugins.flashlight.available(function (isAvailable) {
+            if (isAvailable) {
+                // Sesuai flowchart: toggle otomatis membalikkan status ON/OFF secara aman
+                window.plugins.flashlight.toggle(
+                    function () { console.log("Saklar senter berhasil diubah"); },
+                    function (err) { console.error("Gagal mengubah saklar", err); }
+                );
+            } else {
+                alert("Lampu kilat (LED) tidak tersedia di perangkat ini");
+            }
+        });
+    } else {
+        // Efek simulasi ramah pengujian browser di laptop
+        alert("Fitur Senter Terhubung! Lampu kilat hanya bisa menyala asli via APK di handphone.");
+    }
+}
 
 // nambah tugas
 // export async function tambahtugas(judul_tugas, tgl_deadline, kategori, status_selesai, catatan) {
