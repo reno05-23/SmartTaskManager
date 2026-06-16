@@ -84,7 +84,6 @@
     </div>
 </template>
 
-<!-- Styles moved to src/css/custom.css -->
 
 <script>
 //  import { tambahtugas } from "../js/function.js";
@@ -144,7 +143,7 @@ export default (props, { $, $on }) => {
         let status = document.getElementById("status").value;
         let catatan = document.getElementById("catatan").value;
 
-        if (judul == "" || kategori == "" || deadline == "" || status == "" || catatan == ""){
+        if (judul == "" || kategori == "" || deadline == "" || status == ""){
             app.dialog.alert("Ada Isian yang masih kosong", "Error");
             return;
         }

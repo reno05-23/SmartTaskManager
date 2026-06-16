@@ -134,7 +134,6 @@
                                         Backup</div>
                                     <div class="item-input-wrap">
                                         <select id="cbochannelbackup">
-                                            <option value>Pilih Channel</option>
                                             <option
                                                 value="laravel">Laravel</option>
                                             <option
@@ -220,10 +219,9 @@ export default (props, { $, $on, $f7 }) => {
                 if (data && data.kode == "01"){
                     $f7.dialog.alert(
                         `${data.status}\nBerhasil: ${data.berhasil}, Gagal: ${data.gagal}`,
-                        "Berhasil"
-                    );
+                        "Berhasil");
                     $("#txtnamabackup").val("");
-                    $("#cbochannelbackup").val("").change();
+                    $("#cbochannelbackup").val("laravel").change();
                     $f7.sheet.close("#sheet-backup");
                 } else if (data){
                     $f7.dialog.alert(data.status, "Error");

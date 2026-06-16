@@ -31,8 +31,7 @@
                         </div>
                     </div>
                 </div>
-                <a href="/tambah_tugas/" class="fab fab-raised fab-blue"
-                    style="right:18px;bottom:-22px;position:absolute;z-index:30;"
+                <a href="/tambah_tugas/" class="fab fab-raised fab-blue senter-fab"
                     aria-label="Tambah tugas" title="Tambah tugas">
 
                     <i class="icon f7-icons">plus</i>
