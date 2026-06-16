@@ -86,6 +86,31 @@ export function senter() {
     }
 }
 
+// Bacnkup online
+export function getDataFull(tabel){
+    return new Promise((resolve, reject) =>{
+        let proses = db.transaction([tabel], "readonly").objectStore(tabel).getAll();
+        proses.onsuccess = function(e){
+            let allData = e.target.result;
+            if(Array.isArray(allData)){
+                resolve(allData);
+            }else{
+                typeof allData === 'object' && allData !== null
+                    ? resolve([allData])
+                    : resolve([]);
+            }
+        };
+        proses.onerror = function(e){
+            console.error(`Gagal: Data ${tabel}, ${e.target.errorCode}`);
+            reject([]);
+        };
+    });
+}
+
+
+
+
+
 // nambah tugas
 // export async function tambahtugas(judul_tugas, tgl_deadline, kategori, status_selesai, catatan) {
 //     await dbReadyPromise;

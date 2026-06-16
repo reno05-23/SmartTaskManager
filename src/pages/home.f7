@@ -1,42 +1,5 @@
 <template>
     <div class="page" data-name="home">
-
-        <!-- Panel Kiri -->
-        <div class="panel panel-left panel-floating">
-            <div class="view">
-                <div class="page">
-                    <div class="page-content">
-                        <div class="row grid grid-cols-3"
-                            style="margin-top: 15px;">
-                            <a href="/datafilm/"
-                                class="text-align-center font16 text-color-black panel-close"
-                                data-view=".view-main">
-                                <img src="img/librera.png"
-                                    class="besar-icon80" /><br />Film
-                            </a>
-                            <a href="#"
-                                class="text-align-center font16 text-color-black">
-                                <img src="img/settings7.png"
-                                    class="besar-icon80" /><br />Atur
-                            </a>
-                            <a href="#"
-                                class="text-align-center font16 text-color-black">
-                                <img src="img/mix.png"
-                                    class="besar-icon80" /><br />Logout
-                            </a>
-                        </div>
-                        <div class="row grid grid-cols-3"
-                            style="margin-top: 15px;">
-                            <a href="#"
-                                class="text-align-center font16 text-color-black">
-                                <img src="img/ingresso_com.png"
-                                    class="besar-icon80" /><br />Info
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="toolbar tabbar toolbar-bottom tabbar-icons">
             <div class="toolbar-inner">
                 <div class="toolbar-pane">

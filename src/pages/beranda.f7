@@ -148,9 +148,11 @@
                     <div class="block">
                         <div class="row grid grid-cols-2 grid-gap">
                             <button type="button" id="backup_btnsimpan"
-                                class="button button-fill color-blue">Backup</button>
-                            <button type="button"
-                                class="button button-fill color-red text-color-white">Reset</button>
+                                class="button button-fill color-blue" 
+                                @click="${backup_task}">Backup</button>
+                            <button type="button" id="backup_btnreset"
+                                class="button button-fill color-red text-color-white"
+                                @click="${resetFormBackup}">Reset</button>
                         </div>
                     </div>
                 </div>
@@ -160,9 +162,97 @@
 </template>
 
 <script>
-import { konfigurasidb, senter } from "../js/function.js";
-export default (props, { $, $on }) => {
+import { konfigurasidb, senter, getDataFull } from "../js/function.js";
+export default (props, { $, $on, $f7 }) => {
     konfigurasidb();
+
+    // fungsi backup online
+    const backup_task = async () =>{
+        let nama = $("#txtnamabackup").val();
+        let channel = $("#cbochannelbackup").val();
+
+        if (nama == ""){
+            $f7.dialog.alert("Isian Nama Backup Tidak Tersedia", "Error");
+            return;
+        }
+
+        if (channel == ""){
+            $f7.dialog.alert("Pilih Channel Backup", "Error");
+            return;
+        }
+
+        $f7.dialog.progress("Proses Backup ....");
+        let dttugas = await getDataFull("tabel_tugas");
+        if (dttugas.length > 0){
+            let dtx = "";
+            for (let x of dttugas){
+                let id = x.id;
+                let judul = x.judul_tugas;
+                let deadline = x.tgl_deadline;
+                let kategori = x.kategori;
+                let status = x.status_selesai;
+                let catatan = x.catatan || "";
+                dtx += `${id}|${judul}|${deadline}|${kategori}|${status}|${catatan}#`;
+            }
+
+            let url = channel == "laravel"
+                ? "https://taskmanagerapilav.renoaries.my.id/api/backup"
+                : "https://taskmanagerapinode.renoaries.my.id/backup";
+
+            fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    nama_backup: nama,
+                    dtx: btoa(dtx.slice(0, -1))
+                })
+            })
+            .then(response => {
+                if (!response.ok){
+                    $f7.dialog.close();
+                    $f7.dialog.alert(`HTTP error! status: ${response.status}`, "Error");
+                    return;
+                }
+                return response.json();
+            })
+            .then(data => {
+                $f7.dialog.close();
+                if (data && data.kode == "01"){
+                    $f7.dialog.alert(
+                        `${data.status}\nBerhasil: ${data.berhasil}, Gagal: ${data.gagal}`,
+                        "Berhasil"
+                    );
+                    $("#txtnamabackup").val("");
+                    $("#cbochannelbackup").val("").change();
+                    $f7.sheet.close("#sheet-backup");
+                } else if (data){
+                    $f7.dialog.alert(data.status, "Error");
+                }
+            })
+            .catch(error =>{
+                $f7.dialog.close();
+                console.error("Backup error:", error);
+                $f7.dialog.alert("Terjadi kesalahan pada server", "Error");
+            });
+        }else{
+            $f7.dialog.close();
+            $f7.dialog.alert("Data Tugas Yang Akan di Backup Tidak Tersedia", "Info");
+            return;
+        }
+    };
+
+    // tombol reset di backup
+    const resetFormBackup = () =>{
+        $("#txtnamabackup").val("");
+        $("#cbochannelbackup").val("").change();
+    };
+
+    // $on("pageMounted", () =>{
+    //     $("#backup_btnsimpan").on("click", backup_task);
+    //     $("#backup_btnreset").on("click", resetFormBackup);
+    // });
+
+
     return $render;
 }
 </script>
