@@ -63,10 +63,10 @@
             <div class="hr-divider"></div>
 
             <!-- Sinkronisasi card (aligned with other cards) -->
-            <div class="beranda-sinkron-content margin-horizontal">
+            <div class="margin-horizontal" style="margin-top:8px;">
                 <a href="#" id="btnsinkron" class="link sheet-open"
-                    data-sheet="#sheet-backup">
-                    <div class="card margin-top beranda-sinkron-card">
+                    data-sheet="#sheet-backup" style="display:block;width:100%;">
+                    <div class="card beranda-sinkron-card" style="margin:0;">
                         <div
                             class="card-content card-content-padding beranda-sinkron-content">
                             <div class="beranda-sinkron-icon">
