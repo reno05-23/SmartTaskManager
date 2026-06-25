@@ -164,27 +164,7 @@ export default (props, { $, $on }) => {
             app.dialog.alert(`Tambah Tugas Gagal. Error: ${event.target.errorCode}`, "Error");
         };
     };
-
-
-    // // submit form tambah tugas
-    // document.addEventListener("submit", function (e) {
-    //     if (e.target.id != "form-tambah-tugas") return;
-    //     e.preventDefault();
-
-    //     var judul = document.getElementById("isian").value;
-    //     var kategori = document.getElementById("mata_kuliah").value;
-    //     var deadline = document.getElementById("deadline").value;
-    //     var status = document.getElementById("status").value;
-    //     var catatan = document.getElementById("catatan").value;
-
-    //     tambahtugas(
-    //         judul,
-    //         deadline,
-    //         kategori,
-    //         status,
-    //         catatan
-    //     );
-    // });
+    
     return $render;
 }
 </script>
